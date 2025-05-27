@@ -1,0 +1,5 @@
+export function getWallet(userId: string) {
+  return { userId, balance: 0 };
+}
+export function addCredits(userId: string, amount: number) { /* ... */ }
+export function deductCredits(userId: string, amount: number) { /* ... */ }
