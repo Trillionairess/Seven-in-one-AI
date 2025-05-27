@@ -1,0 +1,69 @@
+export default function EducationHome() {
+  return (
+    <main className="p-8">
+      <h1 className="text-3xl font-bold mb-4">AI Education Platform</h1>
+      <p className="text-lg">Supports learners from Primary to Adult using AI and data analytics.</p>
+    </main>
+  )
+}
+export default function CooperativeHome() {
+  return (
+    <main className="p-8">
+      <h1 className="text-3xl font-bold mb-4">AI Cooperative Banking</h1>
+      <p className="text-lg">Smart savings, loans, and digital banking powered by AI.</p>
+    </main>
+  )
+}export default function CareerHome() {
+  return (
+    <main className="p-8">
+      <h1 className="text-3xl font-bold mb-4">AI Career Development</h1>
+      <p className="text-lg">AI-powered career mapping, resume building, and mentorship.</p>
+    </main>
+  )
+}export default function AgritechHome() {
+  return (
+    <main className="p-8">
+      <h1 className="text-3xl font-bold mb-4">AI in Agriculture</h1>
+      <p className="text-lg">Crop advisory, yield prediction, and market access through AI.</p>
+    </main>
+  )
+}
+export default function AgritechHome() {
+  return (
+    <main className="p-8">
+      <h1 className="text-3xl font-bold mb-4">AI in Agriculture</h1>
+      <p className="text-lg">Crop advisory, yield prediction, and market access through AI.</p>
+    </main>
+  )
+}export default function MarketHome() {
+  return (
+    <main className="p-8">
+      <h1 className="text-3xl font-bold mb-4">AI Market Intelligence</h1>
+      <p className="text-lg">Real-time pricing, demand trends, and trading signals.</p>
+    </main>
+  )
+}export default function DetectorHome() {
+  return (
+    <main className="p-8">
+      <h1 className="text-3xl font-bold mb-4">Fake Prophet AI Detector</h1>
+      <p className="text-lg">Verify prophecies, cross-check records, and track credibility.</p>
+    </main>
+  )
+}
+
+export default function DatingHome() {
+  return (
+    <main className="p-8">
+      <h1 className="text-3xl font-bold mb-4">AI Video-Only Dating</h1>
+      <p className="text-lg">NIN-verified, video-based, AI-matched dating platform.</p>
+    </main>
+  )
+}
+
+
+
+
+
+
+
+
