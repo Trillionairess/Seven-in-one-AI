@@ -1,0 +1,81 @@
+export function MonetizationCard({
+  title,
+  features,
+}: {
+  title: string
+  features: string[]
+}) {
+  return (
+    <div className="rounded-xl border shadow p-4 bg-white w-full max-w-md">
+      <h2 className="text-2xl font-bold mb-2">{title}</h2>
+      <ul className="list-disc ml-5 text-sm">
+        {features.map((f, i) => (
+          <li key={i}>{f}</li>
+        ))}
+      </ul>
+    </div>
+  )
+}export interface Wallet {
+  userId: string
+  balance: number
+}
+
+const wallets: Record<string, Wallet> = {}
+
+export function getWallet(userId: string): Wallet {
+  if (!wallets[userId]) wallets[userId] = { userId, balance: 0 }
+  return wallets[userId]
+}
+
+export function addCredits(userId: string, amount: number) {
+  const w = getWallet(userId)
+  w.balance += amount
+}
+
+export function deductCredits(userId: string, amount: number): boolean {
+  const w = getWallet(userId)
+  if (w.balance < amount) return false
+  w.balance -= amount
+  return true
+}
+
+import Stripe from "stripe"
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2022-11-15",
+})
+
+export async function createCheckoutSession(
+  userId: string,
+  moduleId: string,
+  planId: string
+): Promise<string> {
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    mode: "subscription",
+    line_items: [{ price: planId, quantity: 1 }],
+    success_url: `${process.env.FRONTEND_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${process.env.FRONTEND_URL}/payment-cancel`,
+    metadata: { userId, moduleId },
+  })
+  return session.url!
+}
+import type { NextApiRequest, NextApiResponse } from "next"
+import { createCheckoutSession } from "../../../packages/utils/payments"
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === "POST") {
+    const { userId, moduleId, planId } = req.body
+    try {
+      const url = await createCheckoutSession(userId, moduleId, planId)
+      res.status(200).json({ url })
+    } catch {
+      res.status(500).json({ error: "Failed to create payment session" })
+    }
+  } else {
+    res.status(405).end()
+  }
+}
+
+
+
+
