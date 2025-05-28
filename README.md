@@ -35,3 +35,7 @@ seven-in-one-ai-platform/
 ├── turbo.json
 ├── README.md
 └── package.json
+
+## 🗄 Database
+
+The full PostgreSQL schema is located in:
