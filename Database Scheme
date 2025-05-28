@@ -1,0 +1,65 @@
+-- PostgreSQL schema for AI Education Platform with Monetization and User Roles
+
+-- USERS TABLE (Shared)
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  role TEXT CHECK (role IN ('student', 'teacher', 'parent')) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- STUDENTS TABLE
+CREATE TABLE students (
+  user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  full_name TEXT NOT NULL,
+  age INT,
+  grade TEXT,
+  parent_id UUID REFERENCES parents(user_id)
+);
+
+-- TEACHERS TABLE
+CREATE TABLE teachers (
+  user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  full_name TEXT NOT NULL,
+  subject_area TEXT,
+  bio TEXT
+);
+
+-- PARENTS TABLE
+CREATE TABLE parents (
+  user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  full_name TEXT NOT NULL,
+  phone TEXT
+);
+
+-- WALLET TABLE
+CREATE TABLE wallets (
+  user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  balance NUMERIC DEFAULT 0
+);
+
+-- SUBSCRIPTIONS TABLE
+CREATE TABLE subscriptions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  module TEXT NOT NULL,
+  plan TEXT NOT NULL,
+  status TEXT DEFAULT 'active',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- WITHDRAWAL REQUESTS TABLE
+CREATE TABLE withdrawals (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  amount NUMERIC NOT NULL,
+  status TEXT CHECK (status IN ('pending', 'approved', 'rejected')) DEFAULT 'pending',
+  requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  processed_at TIMESTAMP
+);
+
+-- INDEXES FOR PERFORMANCE
+CREATE INDEX idx_users_role ON users(role);
+CREATE INDEX idx_subscriptions_user ON subscriptions(user_id);
+CREATE INDEX idx_withdrawals_user ON withdrawals(user_id);
